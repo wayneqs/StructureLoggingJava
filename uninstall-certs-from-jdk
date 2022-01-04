@@ -1,0 +1,12 @@
+#!/bin/sh
+
+for dir in ./certificates/*.cer
+do
+    filename=${dir##*/}
+    keytool -delete \
+          -noprompt \
+          -cacerts \
+          -storepass changeit \
+          -alias ${filename%.*}
+done
+

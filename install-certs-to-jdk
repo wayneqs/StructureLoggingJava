@@ -1,0 +1,12 @@
+#!/bin/sh
+
+for dir in ./certificates/*.cer
+do
+    filename=${dir##*/}
+    keytool -import -trustcacerts \
+       -file $dir \
+       -cacerts \
+       -storepass changeit \
+       -noprompt \
+       -alias ${filename%.*}
+done

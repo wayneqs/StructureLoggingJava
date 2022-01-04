@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <property name="APP_CONSOLE_LOG_PATTERN" value="%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr(quote.id=){faint}%clr(%X{quote.id}){blue} %clr(quote.agent=){faint}%clr(%X{quote.agent}){blue} %m %n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <springProfile name="default">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <!-- or just use something simple instead of the colour one -->
+                <pattern>${APP_CONSOLE_LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <logger name="com.landg" level="DEBUG" />
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+
+    </springProfile>
+
+    <springProfile name="deployed">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                    <prettyPrint>false</prettyPrint>
+                </jsonFormatter>
+                <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+            </layout>
+        </appender>
+
+        <logger name="org.springframework" level="INFO" />
+
+        <root level="ERROR">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+</configuration>
